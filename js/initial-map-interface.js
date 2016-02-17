@@ -2,23 +2,23 @@ var INITIAL_MAP_LAT = 32.7767;
 var INITIAL_MAP_LNG = -96.7970;
 
 var initMap = function($mapDiv) {
-  var map = new google.maps.Map($mapDiv[0], {
+  map = new google.maps.Map($mapDiv[0], {
     center: {lat: INITIAL_MAP_LAT, lng: INITIAL_MAP_LNG},
     zoom: 15
   });
 
-  marker = createMarker(map);
+  marker = initializeMarker(map);
 
   // Try HTML5 geolocation.
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
+    navigator.geolocation.getCurrentPosition(function(userPosition) {
+      currentCenter = {
+        lat: userPosition.coords.latitude,
+        lng: userPosition.coords.longitude
       };
 
-      marker.setPosition(pos);
-      map.setCenter(pos);
+      marker.setPosition(currentCenter);
+      map.setCenter(currentCenter);
     }, function() {
       handleLocationError(true, map.getCenter());
     });

@@ -1,4 +1,4 @@
-var createMarker = function(map) {
+var initializeMarker = function(map) {
   var marker = new google.maps.Marker({
     position: map.getCenter(),
     icon: {
@@ -10,8 +10,9 @@ var createMarker = function(map) {
   });
 
   marker.addListener('dragend', function() {
-    map.setCenter(marker.getPosition())
+    currentCenter = marker.getPosition();
+    map.setCenter(currentCenter);
+    getQueryResults(map);
   });
-
   return marker;
 }
