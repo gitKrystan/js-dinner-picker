@@ -8,15 +8,20 @@ var getQueryResults = function(map) {
   };
 
   service = new google.maps.places.PlacesService(map);
-  service.radarSearch(request, createMarkerForPlaceResults);
+  service.radarSearch(request, createMarkersForPlaceResults);
 };
 
-var createMarkerForPlaceResults = function(results, status) {
+var createMarkersForPlaceResults = function(results, status) {
+  var infoWindows = [];
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
-      createMarker(results[i]);
+      createMarker(results[i], infoWindows);
     }
   }
+
+  google.maps.event.addListener(map, "click", function(event) {
+    clearAllInfoWindows(infoWindows);
+  });
 };
 
 var clearAllMarkers = function() {
@@ -26,7 +31,13 @@ var clearAllMarkers = function() {
   placeMarkers = [];
 };
 
-var createMarker = function(place) {
+var clearAllInfoWindows = function(infoWindows) {
+  infoWindows.forEach(function(infoWindow) {
+    infoWindow.close();
+  });
+};
+
+var createMarker = function(place, infoWindows) {
   var placeLoc = place.geometry.location;
   var placeMarker = new google.maps.Marker({
     map: map,
@@ -35,14 +46,17 @@ var createMarker = function(place) {
   placeMarkers.push(placeMarker);
 
   google.maps.event.addListener(placeMarker, 'click', function() {
-    var infoWindow = new google.maps.InfoWindow({map: map});
+    clearAllInfoWindows(infoWindows);
     service.getDetails(place, function(result, status) {
       if (status !== google.maps.places.PlacesServiceStatus.OK) {
         console.error(status);
         return;
       }
+      var infoWindow = new google.maps.InfoWindow({map: map});
+      infoWindows.push(infoWindow);
       infoWindow.setContent(result.name);
       infoWindow.open(map, placeMarker);
+
     });
   });
 };
