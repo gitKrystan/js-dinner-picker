@@ -2,8 +2,8 @@ var getQueryResults = function(map) {
   var request = {
     location: currentCenter,
     radius: '6000',
-    types: ['restaurant'],
-    keyword: 'vegetarian',
+    type: ['restaurant'],
+    keyword: ['indian'],
     openNow: true
   };
 

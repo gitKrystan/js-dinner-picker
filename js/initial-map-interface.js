@@ -19,6 +19,7 @@ var initMap = function($mapDiv) {
 
       marker.setPosition(currentCenter);
       map.setCenter(currentCenter);
+      getQueryResults(map);
     }, function() {
       handleLocationError(true, map.getCenter());
     });
