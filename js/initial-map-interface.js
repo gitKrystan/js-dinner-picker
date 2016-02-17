@@ -26,7 +26,7 @@ var initMap = function($mapDiv) {
     // Browser doesn't support Geolocation
     handleLocationError(false, map.getCenter());
   }
-}
+};
 
 var handleLocationError = function(browserHasGeolocation, pos) {
   var infoWindow = new google.maps.InfoWindow({map: map});
@@ -34,4 +34,4 @@ var handleLocationError = function(browserHasGeolocation, pos) {
   infoWindow.setContent(browserHasGeolocation ?
                         'Error: The Geolocation service failed.' :
                         'Error: Your browser doesn\'t support geolocation.');
-}
+};

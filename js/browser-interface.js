@@ -4,6 +4,7 @@ $(function() {
   var map;
   var marker;
   var currentCenter;
+  placeMarkers = [];
 
   initMap($mapDiv);
 });

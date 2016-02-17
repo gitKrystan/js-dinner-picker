@@ -12,7 +12,8 @@ var initializeMarker = function(map) {
   marker.addListener('dragend', function() {
     currentCenter = marker.getPosition();
     map.setCenter(currentCenter);
+    clearAllMarkers();
     getQueryResults(map);
   });
   return marker;
-}
+};
