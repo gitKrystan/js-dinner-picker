@@ -9,6 +9,40 @@
   </head>
   <body>
     <div id="map"></div>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container">
+        <ul class="nav navbar-nav navbar-left">
+          <li>
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group navbar-form">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="open-now">
+                    Open Now
+                  </label>
+                </div>
+              </div>
+            </form>
+            <form class="navbar-form navbar-left" role="search">
+              <label for="radius">Radius</label>
+              <div class="form-group navbar-form">
+                <input type="range" id="radius" min="0" max="10000">
+              </div>
+            </form>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Narrow Search <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li id="hippie"><a>Hippie Mode</a></li>
+              <li id="hipster"><a>Hipster Mode</a></li>
+              <li id="picky"><a>Picky Mode</a></li>
+              <li role="separator" class="divider"></li>
+              <li id="custom-search"><a>INPUT GOES HERE</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
     <script src="build/js/vendor.min.js"></script>
     <script type="text/javascript" src="build/js/app.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>

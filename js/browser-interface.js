@@ -6,5 +6,12 @@ $(function() {
   var currentCenter;
   placeMarkers = [];
 
+  //request flags
+  openNowFlag = false;
+  radiusFlag = '1000';
+  hippieFlag = false;
+  hipsterFlag = false;
+  pickyFlag = false;
+
   initMap($mapDiv);
 });

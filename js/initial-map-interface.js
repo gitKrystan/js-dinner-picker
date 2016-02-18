@@ -1,7 +1,7 @@
 var INITIAL_MAP_LAT = 32.7767;
 var INITIAL_MAP_LNG = -96.7970;
 
-var initMap = function($mapDiv) {
+var initMap = function($mapDiv, request) {
   map = new google.maps.Map($mapDiv[0], {
     center: {lat: INITIAL_MAP_LAT, lng: INITIAL_MAP_LNG},
     zoom: 15
@@ -16,7 +16,6 @@ var initMap = function($mapDiv) {
         lat: userPosition.coords.latitude,
         lng: userPosition.coords.longitude
       };
-
       marker.setPosition(currentCenter);
       map.setCenter(currentCenter);
       getQueryResults(map);

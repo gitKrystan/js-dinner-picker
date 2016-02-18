@@ -15,5 +15,6 @@ var initializeMarker = function(map) {
     clearAllMarkers();
     getQueryResults(map);
   });
+
   return marker;
 };
