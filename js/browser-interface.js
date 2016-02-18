@@ -33,14 +33,44 @@ var bindKeywordModesToUpdateQuery = function(session) {
   });
 };
 
+var getCustomKeywords = function(session) {
+  $('#custom-search').submit(function(event) {
+    event.preventDefault();
+    var userInput = $('#custom-search input').val();
+    session.query.addCustomKeywords(userInput);
+    updateKeywordsDisplay(session);
+  });
+};
+
 var updateKeywordsDisplay = function(session) {
   var keywords = session.query.keywords;
   var $keywordList = $('#keyword-list');
   $keywordList.empty();
-  keywords.forEach(function(keyword) {
-    $keywordList.append("[" + keyword + "]  ");
+
+  for (var i = 0; i < keywords.length; i++) {
+    var keyword = keywords[i]
+    $keywordList.append("<span id='" + i + "'>[" + keyword + "]  </span>");
+  }
+};
+
+var updateCheckboxes = function(session) {
+  $("#hippie").prop('checked', session.query.hippieFlag);
+  $("#hipster").prop('checked', session.query.hipsterFlag);
+  $("#picky").prop('checked', session.query.pickyFlag);
+}
+
+var bindCustomKeywordsForRemoval = function(session) {
+  $('#keyword-list').on("click", "span", function() {
+    session.query.removeIndexFromKeywords($(this).attr('id'));
+    updateKeywordsDisplay(session);
+    updateCheckboxes(session);
   });
 };
+
+var setDefaultSearchParameters = function(session) {
+  $("#radius").val(session.query.radiusFlag);
+  $("#open-now").prop('checked', session.query.openNowFlag);
+}
 
 $(function() {
   var map = new google.maps.Map($('#map')[0], {
@@ -50,7 +80,10 @@ $(function() {
 
   var session = new SearchSession(map);
 
+  setDefaultSearchParameters(session);
   bindOpenNowToUpdateQuery(session);
   bindRadiusToUpdateQuery(session);
   bindKeywordModesToUpdateQuery(session);
+  bindCustomKeywordsForRemoval(session);
+  getCustomKeywords(session);
 });

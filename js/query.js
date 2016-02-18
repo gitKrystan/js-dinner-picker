@@ -1,11 +1,15 @@
+var INITIAL_QUERY_RADIUS = '1000';
+
 var Query = function(searchSession) {
   this.placeMarkers = [];
   this.searchSession = searchSession;
-  this.openNowFlag = false;
-  this.radiusFlag = '1000';
+  this.openNowFlag = true;
+  this.radiusFlag = INITIAL_QUERY_RADIUS;
   this.hippieFlag = false;
   this.hipsterFlag = false;
   this.pickyFlag = false;
+  this.keywords = [];
+  this.customKeywords = [];
 };
 
 Query.prototype.getQueryResults = function() {
@@ -19,9 +23,11 @@ Query.prototype.getQueryResults = function() {
     openNow: this.openNowFlag,
     opennow: this.openNowFlag
   };
-  console.log(this.request.radius);
+
   var currentQuery = this;
-  this.request.keyword = this.generateSearchKeywords();
+  this.request.keyword = this.generateSearchKeywords().join(" ");
+  console.log(this.request.keyword)
+  console.log(this.request.radius)
   service = new google.maps.places.PlacesService(this.searchSession.map);
   service.radarSearch(this.request, function(results, status) {
     return currentQuery.createMarkersForPlaceResults(results, status);
@@ -33,6 +39,7 @@ Query.prototype.getQueryResults = function() {
 Query.prototype.createMarkersForPlaceResults = function(results, status) {
   var currentQuery = this;
   currentQuery.infoWindows = [];
+  console.log(status);
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     console.log("Results length: " + results.length);
     for (var i = 0; i < results.length; i++) {
@@ -76,7 +83,6 @@ Query.prototype.createMarker = function(place, infoWindows) {
       }
       var infoWindow = new google.maps.InfoWindow({map: currentQuery.searchSession.map});
       currentQuery.infoWindows.push(infoWindow);
-      console.log(result);
       infoWindow.setContent(result.name);
       infoWindow.open(currentQuery.searchSession.map, placeMarker);
     });
@@ -85,17 +91,57 @@ Query.prototype.createMarker = function(place, infoWindows) {
 
 Query.prototype.generateSearchKeywords = function() {
   this.keywords = [];
+
   if (this.hippieFlag) {
     this.keywords.push('vegetarian');
   }
+
   if (this.hipsterFlag) {
-    this.keywords.push('-applebees');
+    this.keywords.push('-chain');
   }
+
   if (this.pickyFlag) {
     this.keywords.push('american OR italian');
   }
-  console.log(this.keywords);
+  this.keywords = this.keywords.concat(this.customKeywords);
   return this.keywords;
+};
+
+Query.prototype.addCustomKeywords = function (input) {
+  this.customKeywords = [];
+  var customKeywords = this.customKeywords;
+  words = input.split(/[,\s]+/g);
+  words.forEach(function(word) {
+    customKeywords.push(word);
+  });
+  this.getQueryResults();
+};
+
+Query.prototype.removeIndexFromKeywords = function (index) {
+  var index = parseInt(index);
+  var keyword = this.keywords[index];
+
+  var customIndex = this.customKeywords.indexOf(keyword);
+  if (customIndex > -1) this.customKeywords.splice(customIndex, 1);
+  if (index > -1) this.keywords.splice(index, 1);
+  this.toggleRelatedFlags(keyword);
+  this.getQueryResults();
+};
+
+Query.prototype.toggleRelatedFlags = function(keyword) {
+  switch (keyword) {
+    case "vegetarian":
+      this.hippieFlag = false;
+      break;
+    case "-chain":
+      this.hipsterFlag = false;
+      break;
+    case "american OR italian":
+      this.pickyFlag = false;
+      break;
+    default:
+      break;
+  }
 };
 
 Query.prototype.toggleOpenNow = function () {
