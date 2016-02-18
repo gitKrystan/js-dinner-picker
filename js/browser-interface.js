@@ -37,6 +37,7 @@ var getCustomKeywords = function(session) {
   $('#custom-search').submit(function(event) {
     event.preventDefault();
     var userInput = $('#custom-search input').val();
+    $('#custom-search input').val("");
     session.query.addCustomKeywords(userInput);
     updateKeywordsDisplay(session);
   });

@@ -76,14 +76,24 @@ Query.prototype.createMarker = function(place, infoWindows) {
 
   google.maps.event.addListener(placeMarker, 'click', function() {
     currentQuery.clearAllInfoWindows();
+    console.log(placeLoc.lat())
     service.getDetails(place, function(result, status) {
       if (status !== google.maps.places.PlacesServiceStatus.OK) {
         console.error(status);
         return;
       }
+      console.log(result)
+
+      // https://www.google.com/maps/dir/startLat,startLng/DestName,DestAddr/DestLat,DestLng/
+      var directionsURL = 'https://www.google.com/maps/dir/' +
+        currentQuery.searchSession.currentCenter.lat + ',' +
+        currentQuery.searchSession.currentCenter.lng + '/' +
+        result.name + ',' + result.formatted_address + '/@' +
+        placeLoc.lat() + ',' + placeLoc.lng();
+      var contentString = '<h5>' + result.name + '</h5><p><a href="' + directionsURL + '" target="_blank">Go Here</a></p>';
       var infoWindow = new google.maps.InfoWindow({map: currentQuery.searchSession.map});
       currentQuery.infoWindows.push(infoWindow);
-      infoWindow.setContent(result.name);
+      infoWindow.setContent(contentString);
       infoWindow.open(currentQuery.searchSession.map, placeMarker);
     });
   });
