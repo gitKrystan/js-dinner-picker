@@ -33,13 +33,29 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Narrow Search <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li id="hippie"><a>Hippie Mode</a></li>
-              <li id="hipster"><a>Hipster Mode</a></li>
-              <li id="picky"><a>Picky Mode</a></li>
+              <li><a>
+                <label>
+                  <input type="checkbox" id="hippie">
+                  Hippie Mode
+                </label>
+              </a></li>
+              <li><a>
+                <label>
+                  <input type="checkbox" id="hipster">
+                  Hipster Mode
+                </label>
+              </a></li>
+              <li><a>
+                <label>
+                  <input type="checkbox" id="picky">
+                  Picky Mode
+                </label>
+              </a></li>
               <li role="separator" class="divider"></li>
               <li id="custom-search"><a>INPUT GOES HERE</a></li>
             </ul>
           </li>
+          <li id="keyword-list"></li>
         </ul>
       </div>
     </nav>

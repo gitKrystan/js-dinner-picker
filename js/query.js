@@ -89,11 +89,12 @@ Query.prototype.generateSearchKeywords = function() {
     this.keywords.push('vegetarian');
   }
   if (this.hipsterFlag) {
-    this.keywords.push('-chain');
+    this.keywords.push('-applebees');
   }
   if (this.pickyFlag) {
     this.keywords.push('american OR italian');
   }
+  console.log(this.keywords);
   return this.keywords;
 };
 

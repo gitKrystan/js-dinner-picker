@@ -17,16 +17,28 @@ var bindRadiusToUpdateQuery = function(session) {
 };
 
 var bindKeywordModesToUpdateQuery = function(session) {
-  $("#hippie").on("click", function() {
+  $("#hippie").on("change", function() {
     session.query.toggleHippie();
+    updateKeywordsDisplay(session);
   });
 
-  $("#hipster").on("click", function() {
+  $("#hipster").on("change", function() {
     session.query.toggleHipster();
+    updateKeywordsDisplay(session);
   });
 
-  $("#picky").on("click", function() {
-    session.query.toggleHippie();
+  $("#picky").on("change", function() {
+    session.query.togglePicky();
+    updateKeywordsDisplay(session);
+  });
+};
+
+var updateKeywordsDisplay = function(session) {
+  var keywords = session.query.keywords;
+  var $keywordList = $('#keyword-list');
+  $keywordList.empty();
+  keywords.forEach(function(keyword) {
+    $keywordList.append("[" + keyword + "]  ");
   });
 };
 
