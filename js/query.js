@@ -26,10 +26,9 @@ Query.prototype.getQueryResults = function() {
 
   var currentQuery = this;
   this.request.keyword = this.generateSearchKeywords().join(" ");
-  console.log(this.request.keyword)
-  console.log(this.request.radius)
   service = new google.maps.places.PlacesService(this.searchSession.map);
   service.radarSearch(this.request, function(results, status) {
+    currentQuery.randomDestination = currentQuery.pickRandomResultAndGenerateURL(results, status);
     return currentQuery.createMarkersForPlaceResults(results, status);
   });
 
@@ -50,6 +49,25 @@ Query.prototype.createMarkersForPlaceResults = function(results, status) {
   google.maps.event.addListener(currentQuery.searchSession.map, "click", function(event) {
     currentQuery.clearAllInfoWindows();
   });
+};
+
+Query.prototype.pickRandomResultAndGenerateURL = function(results, status) {
+  var currentQuery = this;
+
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    var randomNumber = Math.floor(Math.random() * (results.length));
+    var randomResult = results[randomNumber];
+    console.log(randomResult)
+    var randomResultLocation = randomResult.geometry.location;
+    service.getDetails(randomResult, function(result, status) {
+      if (status !== google.maps.places.PlacesServiceStatus.OK) {
+        console.error(status);
+        return;
+      }
+      currentQuery.randomDestination = currentQuery.generateDestinationURL(randomResultLocation, result)
+    });
+
+  }
 };
 
 Query.prototype.clearAllMarkers = function() {
@@ -76,7 +94,7 @@ Query.prototype.createMarker = function(place, infoWindows) {
 
   google.maps.event.addListener(placeMarker, 'click', function() {
     currentQuery.clearAllInfoWindows();
-    console.log(placeLoc.lat())
+    console.log('service:' + service)
     service.getDetails(place, function(result, status) {
       if (status !== google.maps.places.PlacesServiceStatus.OK) {
         console.error(status);
@@ -85,11 +103,7 @@ Query.prototype.createMarker = function(place, infoWindows) {
       console.log(result)
 
       // https://www.google.com/maps/dir/startLat,startLng/DestName,DestAddr/DestLat,DestLng/
-      var directionsURL = 'https://www.google.com/maps/dir/' +
-        currentQuery.searchSession.currentCenter.lat + ',' +
-        currentQuery.searchSession.currentCenter.lng + '/' +
-        result.name + ',' + result.formatted_address + '/@' +
-        placeLoc.lat() + ',' + placeLoc.lng();
+      var directionsURL = currentQuery.generateDestinationURL(placeLoc, result)
       var contentString = '<h5>' + result.name + '</h5><p><a href="' + directionsURL + '" target="_blank">Go Here</a></p>';
       var infoWindow = new google.maps.InfoWindow({map: currentQuery.searchSession.map});
       currentQuery.infoWindows.push(infoWindow);
@@ -97,6 +111,15 @@ Query.prototype.createMarker = function(place, infoWindows) {
       infoWindow.open(currentQuery.searchSession.map, placeMarker);
     });
   });
+};
+
+Query.prototype.generateDestinationURL = function (destinationLocation, destinationObject) {
+  var directionsURL = 'https://www.google.com/maps/dir/' +
+    this.searchSession.currentCenter.lat + ',' +
+    this.searchSession.currentCenter.lng + '/' +
+    destinationObject.name + ',' + destinationObject.formatted_address + '/@' +
+    destinationLocation.lat() + ',' + destinationLocation.lng();
+  return directionsURL;
 };
 
 Query.prototype.generateSearchKeywords = function() {

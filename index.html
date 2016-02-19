@@ -12,19 +12,12 @@
     <nav class="navbar navbar-default navbar-fixed-bottom">
       <div class="container">
         <ul class="nav navbar-nav navbar-left">
+          <li class="active"><a id="random" target="_blank">I'm Feeling Hungry!</a></li>
+          <li>
+            <p class="navbar-text">Radius:</p>
+          </li>
           <li>
             <form class="navbar-form navbar-left" role="search">
-              <div class="form-group navbar-form">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" id="open-now">
-                    Open Now
-                  </label>
-                </div>
-              </div>
-            </form>
-            <form class="navbar-form navbar-left" role="search">
-              <label for="radius">Radius</label>
               <div class="form-group navbar-form">
                 <input type="range" id="radius" min="200" max="10000">
               </div>
@@ -33,6 +26,13 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Narrow Search <span class="caret"></span></a>
             <ul class="dropdown-menu">
+              <li><a>
+                <label>
+                  <input type="checkbox" id="open-now">
+                  Open Now
+                </label>
+              </a></li>
+              <li role="separator" class="divider"></li>
               <li><a>
                 <label>
                   <input type="checkbox" id="hippie">
