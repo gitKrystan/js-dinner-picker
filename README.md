@@ -15,7 +15,7 @@ Users can also enter custom search parameters.
 
 ## Setup
 
-Install by cloning [this repository](https://github.com/gitKrystan/js-github-api.git).
+Install by cloning this repository.
 
 On the command line:
 ```
