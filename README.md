@@ -10,6 +10,7 @@ Dinner Picker allows groups of people to choose a restaurant quickly by entering
 * Picky mode shows only Italian and American restaurants.
 * Hippie mode shows only vegetarian restaurants.
 * Hipster mode hides all Applebees.
+
 Users can also enter custom search parameters.
 
 ## Setup
